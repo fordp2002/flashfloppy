@@ -336,6 +336,7 @@ static const struct emu_option_info info[OPT_nr] = {
     [OPT_pin34] = NAMED(pin_names),
     [OPT_write_protect] = YES_NO,
     [OPT_max_cyl] = NUMBER,
+    [OPT_da_negative_steps] = NUMBER,
     [OPT_side_select_glitch_filter] = NUMBER,
     [OPT_track_change] = NAMED(track_change_names),
     [OPT_write_drain] = NAMED(write_drain_names),

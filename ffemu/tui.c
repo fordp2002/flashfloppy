@@ -3217,7 +3217,7 @@ static const char * const fd_places[] = {
     "pin02", "",
     "pin34", "",
     "write-protect", "",
-    "max-cyl", "",
+    "max-cyl", "da-negative-steps", "",
     "side-select-glitch-filter", "|",
     "track-change", "",
     "write-drain", "",
@@ -4736,6 +4736,9 @@ static const struct {
     { "max-cyl",
       "Maximum cylinder that can be stepped to: 255 for the Direct Access "
       "mode of image selectors" },
+    { "da-negative-steps",
+      "Also enter Direct Access mode after N steps out past track 0, 0..16: "
+      "0 is off" },
     { "motor-delay",
       "Milliseconds from motor-on to drive ready, 0..1000, or ignore: the "
       "motor signal is ignored" },

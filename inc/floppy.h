@@ -321,9 +321,13 @@ static inline unsigned int im_nphys_cyls(struct image *im)
 {
     return min_t(unsigned int, im->nr_cyls * (im->step?:1), 255);
 }
+/* Enough steps taken below track 0 for D-A mode (FF.CFG da-negative-steps)? */
+bool_t da_below_trk0(void);
 static inline bool_t in_da_mode(struct image *im, unsigned int cyl)
 {
 #if TARGET == TARGET_shugart
+    if (da_below_trk0())
+        return TRUE;
     return cyl >= max_t(unsigned int, DA_FIRST_CYL, im_nphys_cyls(im));
 #else
     return FALSE;

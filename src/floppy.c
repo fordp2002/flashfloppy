@@ -618,7 +618,14 @@ static void drive_step_timer(void *_drv)
         break;
     case STEP_latched:
         speaker_pulse();
-        drv->cyl += drv->step.inward ? 1 : -1;
+        if (drv->step.below_trk0) {
+            if (drv->step.inward)
+                neg_steps--;
+            else if (neg_steps < 255)
+                neg_steps++;
+        } else {
+            drv->cyl += drv->step.inward ? 1 : -1;
+        }
         timer_set(&drv->step.timer,
                   drv->step.start + time_ms(ff_cfg.head_settle_ms));
         if (drv->cyl == 0)

@@ -1065,6 +1065,11 @@ static void read_ff_cfg(void)
             ff_cfg.max_cyl = strtol(opts.arg, NULL, 10);
             break;
 
+        case FFCFG_da_negative_steps:
+            ff_cfg.da_negative_steps = min_t(
+                unsigned int, strtol(opts.arg, NULL, 10), 16);
+            break;
+
         case FFCFG_side_select_glitch_filter:
             ff_cfg.side_select_glitch_filter = strtol(opts.arg, NULL, 10);
             break;

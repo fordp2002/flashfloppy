@@ -349,6 +349,10 @@ bool_t image_setup_track(
         h = ((track>>1) >= im_nphys_cyls(im)) ? &dummy_image_handler
              : im->disk_handler;
     } else {
+        /* Entering D-A mode below track 0 (da-negative-steps) leaves the
+         * track number unchanged: make the D-A handler set up afresh. */
+        if (h != &da_image_handler)
+            im->cur_track = ~0;
         h = &da_image_handler;
         im->nr_sides = 1;
     }

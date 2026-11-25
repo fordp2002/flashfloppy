@@ -466,15 +466,19 @@ static void IRQ_STEP_changed(void)
         || drive_is_writing())   /* Write in progress? */
         return;
 
-    /* Latch the step direction and check bounds (0 <= cyl <= 255). */
+    /* Latch the step direction and check bounds (0 <= cyl <= 255). With
+     * da-negative-steps, steps below track 0 are counted instead. */
     drv->step.inward = !(idr_b & m(pin_dir));
-    if (drv->cyl == (drv->step.inward ? ff_cfg.max_cyl : 0))
+    drv->step.below_trk0 = (ff_cfg.da_negative_steps && (drv->cyl == 0)
+                            && (!drv->step.inward || neg_steps));
+    if (!drv->step.below_trk0
+        && (drv->cyl == (drv->step.inward ? ff_cfg.max_cyl : 0)))
         return;
 
     /* Valid step request for this drive: start the step operation. */
     drv->step.start = time_now();
     drv->step.state = STEP_started;
-    if (drv->outp & m(outp_trk0))
+    if ((drv->outp & m(outp_trk0)) && !drv->step.below_trk0)
         drive_change_output(drv, outp_trk0, FALSE);
     if (dma_rd != NULL) {
         rdata_stop();

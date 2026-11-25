@@ -67,12 +67,21 @@ static struct drive {
 #define STEP_settling 4 /* handled by step.timer */
         uint8_t state;
         bool_t inward;
+        bool_t below_trk0; /* step below track 0: only neg_steps changes */
         time_t start;
         struct timer timer;
     } step;
     uint32_t restart_pos;
     struct image *image;
 } drive;
+
+/* Steps taken outward past track 0 (FF.CFG da-negative-steps). */
+static volatile uint8_t neg_steps;
+
+bool_t da_below_trk0(void)
+{
+    return ff_cfg.da_negative_steps && (neg_steps >= ff_cfg.da_negative_steps);
+}
 
 static struct image *image;
 

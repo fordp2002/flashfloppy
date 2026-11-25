@@ -175,6 +175,7 @@ struct packed ff_cfg {
 #define SHOWEXT_yes  1
 #define SHOWEXT_auto 2
     uint8_t show_filename_ext;
+    uint8_t da_negative_steps; /* 0: off */
 };
 
 extern struct ff_cfg ff_cfg;
